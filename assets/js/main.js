@@ -620,6 +620,7 @@
     const posterOf = (r) => `assets/media/posters/${r.slug}.jpg`;
 
     let index = 0;
+    let openedIndex = 0;
     let origin = null;
     let scrubbing = false;
     let rafId = 0;
@@ -684,18 +685,33 @@
       rafId = requestAnimationFrame(timeLoop);
     }
 
+    // Where the frame sits over a card, including the rotation of the hero fan.
+    function cardPose(el) {
+      const r = el.getBoundingClientRect();
+      const fan = el.closest('.deck-card');
+      const m = fan ? new DOMMatrixReadOnly(getComputedStyle(fan).transform) : null;
+      return {
+        cx: r.left + r.width / 2,
+        cy: r.top + r.height / 2,
+        width: m ? el.offsetWidth * Math.hypot(m.a, m.b) : r.width,
+        angle: m ? Math.atan2(m.b, m.a) * (180 / Math.PI) : 0,
+      };
+    }
+    // The video always fills the frame's width, so matching widths also works on phones,
+    // where the frame is taller than the video.
+    function poseTransform(pose) {
+      const to = frameEl.getBoundingClientRect();
+      const dx = pose.cx - (to.left + to.width / 2);
+      const dy = pose.cy - (to.top + to.height / 2);
+      return `translate(${dx}px,${dy}px) rotate(${pose.angle}deg) scale(${pose.width / to.width})`;
+    }
+
     function flipFromOrigin() {
       if (reduceMQ.matches || !origin || !origin.isConnected) return;
-      const from = origin.getBoundingClientRect();
-      const to = frameEl.getBoundingClientRect();
-      if (!from.width || !to.width) return;
-      const dx = from.left - to.left;
-      const dy = from.top - to.top;
+      const pose = cardPose(origin);
+      if (!pose.width) return;
       frameEl.animate(
-        [
-          { transform: `translate(${dx}px,${dy}px) scale(${from.width / to.width})` },
-          { transform: 'translate(0,0) scale(1)' },
-        ],
+        [{ transform: poseTransform(pose) }, { transform: 'none' }],
         { duration: 800, easing: 'cubic-bezier(.16,1,.3,1)' },
       );
     }
@@ -709,41 +725,48 @@
       root.classList.add('is-locked');
       video.muted = false;
       renderMute();
+      dlg.classList.remove('is-closing');
       dlg.showModal();
       load(i);
+      openedIndex = i;
       flipFromOrigin();
-      requestAnimationFrame(() => dlg.classList.add('is-open'));
+      requestAnimationFrame(() => { if (!closing) dlg.classList.add('is-open'); });
       cancelAnimationFrame(rafId);
       timeLoop();
-    }
-
-    function finishClose() {
-      closing = false;
-      dlg.classList.remove('is-open');
-      dlg.close();
     }
 
     function close() {
       if (closing || !dlg.open) return;
       closing = true;
       video.pause();
+      if (reduceMQ.matches) { dlg.close(); return; }
+
+      // Finish any opening animation first so the frame is measured at rest.
+      frameEl.getAnimations().forEach((a) => a.cancel());
       dlg.classList.remove('is-open');
-      const target = origin && origin.isConnected ? origin.getBoundingClientRect() : null;
-      const onScreen = target && target.width && target.bottom > 0 && target.top < geo.vh && target.right > 0 && target.left < geo.vw;
-      if (reduceMQ.matches || !onScreen) { finishClose(); return; }
-      const to = frameEl.getBoundingClientRect();
-      const anim = frameEl.animate(
-        [
-          { transform: 'translate(0,0) scale(1)', opacity: 1 },
-          { transform: `translate(${target.left - to.left}px,${target.top - to.top}px) scale(${target.width / to.width})`, opacity: 1 },
-        ],
-        { duration: 560, easing: 'cubic-bezier(.76,0,.24,1)', fill: 'forwards' },
+      dlg.classList.add('is-closing');
+      suspended = false;
+      applyAll();
+
+      // After switching reels the original card shows something else, so just fade away.
+      const pose = index === openedIndex && origin && origin.isConnected ? cardPose(origin) : null;
+      const onScreen = pose && pose.width && pose.cy > 0 && pose.cy < geo.vh && pose.cx > 0 && pose.cx < geo.vw;
+      const move = frameEl.animate(
+        [{ transform: 'none' }, { transform: onScreen ? poseTransform(pose) : 'scale(.94)' }],
+        { duration: onScreen ? 620 : 360, easing: 'cubic-bezier(.65,0,.2,1)', fill: 'forwards' },
       );
-      anim.onfinish = () => { finishClose(); anim.cancel(); };
+      // The picture dissolves into the live card as it lands, so nothing pops at the end.
+      const fade = frameEl.animate(
+        [{ opacity: 1 }, { opacity: 0 }],
+        { duration: onScreen ? 280 : 300, delay: onScreen ? 340 : 60, easing: 'linear', fill: 'forwards' },
+      );
+      Promise.all([move.finished, fade.finished]).catch(() => {}).then(() => { if (dlg.open) dlg.close(); });
     }
 
     dlg.addEventListener('close', () => {
       closing = false;
+      dlg.classList.remove('is-open', 'is-closing');
+      frameEl.getAnimations().forEach((a) => a.cancel());
       cancelAnimationFrame(rafId);
       video.pause();
       video.removeAttribute('src');

@@ -637,7 +637,18 @@ em { font-style: italic; }
   border-radius: var(--radius);
   background: #000;
   box-shadow: 0 50px 140px -30px rgba(0, 0, 0, .85), 0 0 0 1px rgba(255, 255, 255, .07);
-  transform-origin: 0 0;
+  transition: box-shadow .25s linear;
+}
+/* While closing, only the picture travels back to its card. */
+.player.is-closing .player__frame { background: transparent; box-shadow: none; }
+.player.is-closing .player__bar,
+.player.is-closing .player__nav,
+.player.is-closing .player__meta,
+.player.is-closing .player__close,
+.player.is-closing .player__spinner {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .14s linear;
 }
 .player__frame video { position: absolute; inset: 0; object-fit: contain; }
 .player__spinner {
