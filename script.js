@@ -766,12 +766,12 @@ function runIntro(world, gsap, ScrollTrigger) {
   });
   $$('[data-reveal]').forEach((el) => {
     if (el.closest('.scene--slate')) return;
-    gsap.set(el, { autoAlpha: 0, y: 26 });
+    gsap.set(el, { opacity: 0, y: 26 });
     ScrollTrigger.create({
       trigger: el,
       start: 'top 92%',
       once: true,
-      onEnter: () => gsap.to(el, { autoAlpha: 1, y: 0, duration: 1.1, ease: 'expo.out', delay: 0.12 }),
+      onEnter: () => gsap.to(el, { opacity: 1, y: 0, duration: 1.1, ease: 'expo.out', delay: 0.12 }),
     });
   });
 
@@ -779,8 +779,8 @@ function runIntro(world, gsap, ScrollTrigger) {
   const chrome = [$('.top'), $('.tl')];
   const tlIntro = gsap.timeline({ defaults: { ease: 'expo.out' } });
   gsap.set(slateWords, { yPercent: 115, rotate: 4 });
-  gsap.set(slateBits, { autoAlpha: 0, y: 24 });
-  gsap.set(chrome, { autoAlpha: 0 });
+  gsap.set(slateBits, { opacity: 0, y: 24 });
+  gsap.set(chrome, { opacity: 0 });
 
   const D = fast ? 0.5 : 1;
   if (!loader.skipped) tlIntro.add(() => hideLoader(false), 0);
@@ -788,8 +788,8 @@ function runIntro(world, gsap, ScrollTrigger) {
     .add(world.assemble(fast ? 1.3 : 2.6), loader.skipped ? 0 : 0.35)
     .add(() => $('.slate__name').classList.add('is-lit'), `-=${0.7 * D}`)
     .to(slateWords, { yPercent: 0, rotate: 0, duration: 1.2, stagger: 0.05 }, `-=${0.9 * D}`)
-    .to(slateBits, { autoAlpha: 1, y: 0, duration: 1, stagger: 0.07 }, `-=${0.9 * D}`)
-    .to(chrome, { autoAlpha: 1, duration: 0.8, ease: 'power1.out' }, '<');
+    .to(slateBits, { opacity: 1, y: 0, duration: 1, stagger: 0.07 }, `-=${0.9 * D}`)
+    .to(chrome, { opacity: 1, duration: 0.8, ease: 'power1.out' }, '<');
   if (loader.skipped) tlIntro.progress(1);
   return tlIntro;
 }
@@ -1411,7 +1411,7 @@ function createWorld(THREE, gsap) {
     for (let y = 0; y < h; y += step) for (let x = 0; x < w; x += step) if (data[(y * w + x) * 4 + 3] > 140) pts.push(x, y);
     const left = r.left - pr.left;
     const top = r.top - pr.top;
-    let minX = Infinity; let maxX = -Infinity;
+    let minX = Infinity; let maxX = -Infinity; let minY = Infinity; let maxY = -Infinity;
     const n = pts.length / 2;
     for (let i = 0; i < COUNT; i += 1) {
       const k = n ? Math.floor(Math.random() * n) : 0;
@@ -1420,10 +1420,12 @@ function createWorld(THREE, gsap) {
       const wpt = toWorld(sx, sy);
       nameArr[i * 3] = wpt.x; nameArr[i * 3 + 1] = wpt.y; nameArr[i * 3 + 2] = (Math.random() - 0.5) * 0.06;
       minX = Math.min(minX, wpt.x); maxX = Math.max(maxX, wpt.x);
+      minY = Math.min(minY, wpt.y); maxY = Math.max(maxY, wpt.y);
     }
     nameAttr.needsUpdate = true;
     pU.uSweepRange.value.set(minX, maxX);
-    nameBox = rectWorld({ left, top, width: r.width, height: r.height });
+    // the box of the glyphs themselves (the span is a full-width block)
+    nameBox = n ? { x: (minX + maxX) / 2, y: (minY + maxY) / 2, w: maxX - minX, h: maxY - minY } : rectWorld({ left, top, width: r.width, height: r.height });
   }
   let nameBox = { x: 0, y: 0, w: 4, h: 1 };
 
@@ -1448,7 +1450,7 @@ function createWorld(THREE, gsap) {
     uA: U(PAL.a), uB: U(PAL.b), uText: U(PAL.text), uAlpha: U(0), uClosed: U(0),
   };
   const lMat = new THREE.ShaderMaterial({
-    vertexShader: LINE_VERT, fragmentShader: LINE_FRAG, uniforms: lU, transparent: true, depthWrite: false, depthTest: false,
+    vertexShader: LINE_VERT, fragmentShader: LINE_FRAG, uniforms: lU, transparent: true, depthWrite: false, depthTest: false, side: THREE.DoubleSide,
     blending: THREE.CustomBlending, blendSrc: THREE.OneFactor, blendDst: THREE.OneFactor,
   });
   const line = new THREE.Mesh(lGeo, lMat);
@@ -1844,9 +1846,9 @@ function createWorld(THREE, gsap) {
     const H = view.worldH;
     let x0; let y0a; let y0b;
     if (sc < 1) {
-      x0 = lerp(nameBox.x + nameBox.w * 0.5 + 0.25, ringState.cx, smooth(0, 1, sc));
-      y0a = lerp(nameBox.y - nameBox.h * 0.9, ringState.cy - ringState.cardH * 0.75, smooth(0, 1, sc));
-      y0b = lerp(nameBox.y + nameBox.h * 0.9, ringState.cy + ringState.cardH * 0.75, smooth(0, 1, sc));
+      x0 = lerp(nameBox.x + nameBox.w * 0.5 + 0.22, ringState.cx, smooth(0, 1, sc));
+      y0a = lerp(nameBox.y - nameBox.h * 0.75, ringState.cy - ringState.cardH * 0.75, smooth(0, 1, sc));
+      y0b = lerp(nameBox.y + nameBox.h * 0.75, ringState.cy + ringState.cardH * 0.75, smooth(0, 1, sc));
     } else if (sc < 2) {
       const k = smooth(1, 2, sc);
       x0 = lerp(ringState.cx, layout.split.x, k);
@@ -1867,8 +1869,8 @@ function createWorld(THREE, gsap) {
     }
     if (introOn) {
       const sx = lerp(pU.uSweepRange.value.x - 0.4, pU.uSweepRange.value.y + 0.4, clamp(pU.uSweep.value));
-      p0v.set(sx, nameBox.y - nameBox.h * 0.9, 0);
-      p1v.set(sx, nameBox.y + nameBox.h * 0.9, 0);
+      p0v.set(sx, nameBox.y - nameBox.h * 0.75, 0);
+      p1v.set(sx, nameBox.y + nameBox.h * 0.75, 0);
     }
     lU.uP0.value.copy(p0v);
     lU.uP1.value.copy(p1v);
@@ -1947,6 +1949,7 @@ function createWorld(THREE, gsap) {
   document.addEventListener('visibilitychange', () => loop(running && !paused && !document.hidden));
 
   resize();
+  if (params.has('debug')) window.__world = { lU, pU, line, camera, renderer, view };
 
   return {
     intro: null,
