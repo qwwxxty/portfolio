@@ -17,7 +17,7 @@
 
   --line: color-mix(in oklab, var(--text) 14%, transparent);
   --line-strong: color-mix(in oklab, var(--text) 28%, transparent);
-  --glass: color-mix(in oklab, var(--surface) 78%, transparent);
+  --glass: color-mix(in oklab, var(--surface) 62%, transparent);
 
   /* Type scale: six steps, nothing else is used. */
   --fs-xs: .75rem;
@@ -200,13 +200,16 @@ table { border-collapse: collapse; }
 }
 .loader__skip { position: absolute; right: calc(var(--g) + 12px); bottom: calc(var(--g) + 16px); }
 
+/* While the 3D layer loads behind the loader, don't spend bandwidth on static posters. */
+html.boot:not(.is-immersive) img[loading="lazy"] { display: none; }
+
 /* ---------- Top bar ---------- */
 .top {
   position: fixed; inset: 0 0 auto; z-index: 60;
   display: flex; align-items: center; justify-content: space-between; gap: 16px;
   height: var(--top-h);
   padding: 0 var(--g);
-  background: linear-gradient(180deg, color-mix(in oklab, var(--bg) 92%, transparent) 30%, transparent);
+  background: linear-gradient(180deg, var(--bg) 0, color-mix(in oklab, var(--bg) 88%, transparent) 62%, transparent);
 }
 .top__logo {
   display: inline-flex; align-items: center;
@@ -244,12 +247,12 @@ table { border-collapse: collapse; }
 .tl__end { display: none; color: var(--muted); }
 .tl__lane { position: relative; flex: 1; min-width: 0; height: 30px; touch-action: none; cursor: ew-resize; }
 .tl__clips { display: flex; gap: 2px; height: 100%; }
-.tl__clips li { flex: var(--w, 1) 1 0; min-width: 0; }
+.tl__clips li { flex: var(--w, 1) 1 0; min-width: 34px; container-type: inline-size; }
 .tl__clip {
   position: relative;
   display: flex; align-items: center; gap: 6px;
   height: 100%;
-  padding: 0 8px;
+  padding: 0 7px;
   overflow: hidden;
   border-radius: 4px;
   background: linear-gradient(180deg, color-mix(in oklab, var(--surface) 70%, var(--muted) 8%), var(--surface));
@@ -269,6 +272,7 @@ table { border-collapse: collapse; }
 .tl__clip b { color: var(--text); font-weight: 600; }
 .tl__clip span { display: none; overflow: hidden; text-overflow: ellipsis; }
 .tl__clip:hover { color: var(--text); }
+@container (max-width: 96px) { .tl__clip span { display: none !important; } }
 .tl__clip.is-active {
   color: var(--text);
   background: linear-gradient(180deg, color-mix(in oklab, var(--accent-2) 26%, var(--surface)), color-mix(in oklab, var(--accent-2) 10%, var(--surface)));
@@ -844,8 +848,8 @@ main { position: relative; z-index: 1; }
   row-gap: 14px;
 }
 .is-immersive .layers__head { grid-area: 1 / 1 / 3 / 2; align-self: start; z-index: 2; gap: 12px; }
-.is-immersive .monitor { grid-area: 1 / 1 / 3 / 2; position: relative; top: auto; align-self: center; justify-self: center; width: auto; height: min(100%, 50svh); display: flex; flex-direction: column; }
-.is-immersive .monitor__screen { flex: 1; min-height: 0; aspect-ratio: 9 / 16; }
+.is-immersive .monitor { grid-area: 1 / 1 / 3 / 2; position: relative; top: auto; align-self: center; justify-self: center; width: calc(min(46svh, 520px) * .5625); }
+.is-immersive .monitor__screen { width: 100%; aspect-ratio: 9 / 16; }
 .is-immersive .layers { grid-area: 3 / 1; display: grid; }
 .is-immersive .layer { grid-area: 1 / 1; min-height: 0; opacity: 0; transform: translateY(12px); transition: opacity .35s linear, transform .8s var(--ease); gap: 8px; }
 .is-immersive .layer.is-active { opacity: 1; transform: none; }
@@ -875,7 +879,7 @@ main { position: relative; z-index: 1; }
   .is-immersive .reels, .is-immersive .layers { grid-area: 3 / 1 / 4 / 2; align-self: end; }
   .is-immersive .reels__bin, .is-immersive .layers__ticks { grid-area: 4 / 1 / 5 / 2; }
   .is-immersive .reel__info { max-width: 44ch; }
-  .is-immersive .monitor { grid-area: 1 / 2 / 5 / 3; height: min(100%, 74svh); }
+  .is-immersive .monitor { grid-area: 1 / 2 / 4 / 3; align-self: start; width: calc(min(54svh, 600px) * .5625); }
   .is-immersive .layers { display: flex; flex-direction: column; gap: 6px; }
   .is-immersive .layer { grid-area: auto; opacity: .38; transform: none; gap: 0; }
   .is-immersive .layer.is-active { opacity: 1; }
@@ -893,6 +897,14 @@ main { position: relative; z-index: 1; }
 
 /* Mobile: the header shares the stage area, so it fades once the scene starts (see script.js). */
 @media (max-width: 899.98px) {
+  .is-immersive .scene--selects .scene__pin,
+  .is-immersive .scene--layers .scene__pin { isolation: isolate; }
+  .is-immersive .scene--selects .scene__pin::before,
+  .is-immersive .scene--layers .scene__pin::before {
+    content: ""; position: absolute; inset: auto 0 0; z-index: -1; height: 46%;
+    background: linear-gradient(180deg, transparent, color-mix(in oklab, var(--bg) 78%, transparent) 45%);
+    pointer-events: none;
+  }
   .is-immersive .selects__head .selects__lede { font-size: var(--fs-s); }
   .is-immersive .reel__desc { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
   .is-immersive .reel__title { font-size: var(--fs-l); }

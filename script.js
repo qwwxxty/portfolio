@@ -673,9 +673,9 @@ function loaderProgress(p, step) {
 }
 function hideLoader(instant) {
   if (!loader.el.isConnected) return;
-  if (instant || reduceMQ.matches) { loader.el.remove(); return; }
+  if (instant || reduceMQ.matches) { loader.el.remove(); root.classList.remove('boot'); return; }
   loader.el.classList.add('is-out');
-  setTimeout(() => loader.el.remove(), 1300);
+  setTimeout(() => { loader.el.remove(); root.classList.remove('boot'); }, 1300);
 }
 $('[data-skip]').addEventListener('click', () => {
   loader.skipped = true;
@@ -828,14 +828,14 @@ void main(){
   vec2 r = vec2(fbm(p * 1.9 + 1.7 * q + vec2(1.7, 9.2) + t * .6), fbm(p * 1.9 + 1.7 * q + vec2(8.3, 2.8) - t * .5));
   float f = fbm(p * 1.6 + 2. * r);
   vec3 col = uBg;
-  col = mix(col, uSurf * 1.7, smoothstep(.32, .95, f) * .6 * uLift);
+  col = mix(col, uSurf * 2.3, smoothstep(.34, .95, f) * .55 * uLift * (.55 + .45 * vUv.y));
   vec2 gp = vUv - uGlow; gp.x *= uAspect;
   float g = exp(-dot(gp, gp) * 2.4);
   float side = smoothstep(uSplit - .2, uSplit + .2, vUv.x);
   float hueMix = mix(clamp(uHue + (r.x - .5) * .9, 0., 1.), side, uSplitAmt);
   vec3 warm = mix(uA, uB, hueMix);
   float burn = smoothstep(.38, .95, f + q.y * .35);
-  col += warm * burn * (.04 + .5 * g) * uWarm;
+  col += warm * burn * (.025 + .62 * g) * uWarm;
   col += warm * g * .09 * uGlowAmt;
   float seam = exp(-abs(vUv.x - uSplit) * 24.) * uSplitAmt;
   col += mix(uA, uB, side) * seam * .2;
@@ -851,33 +851,33 @@ const BACKDROP_FRAG = /* glsl */`
 precision highp float;
 varying vec2 vUv;
 uniform sampler2D uNeb, uSlot;
-uniform float uSlotAmt, uFilmAmt, uScrub, uTime, uFilmY, uFilmH;
+uniform float uSlotAmt, uFilmAmt, uScrub, uTime;
+uniform vec4 uFilm;
 uniform vec2 uRes, uSlotSize;
 uniform vec3 uA, uB, uBg, uSurf, uText;
 ${GLSL_NOISE}
 float sdRR(vec2 p, vec2 b, float r){ vec2 q = abs(p) - b + r; return length(max(q, 0.)) + min(max(q.x, q.y), 0.) - r; }
-// Stand-in for the scroll-scrubbed footage: a strip of film frames that moves with the scroll.
+// Stand-in for the scroll-scrubbed footage: a vertical strip of film running behind the
+// program monitor, frames advancing with the scroll.
 vec3 filmStrip(vec2 uv, float aspect){
-  float h = uFilmH;
-  float y = (uv.y - (uFilmY - h * .5)) / h;
-  if (y < 0. || y > 1.) return vec3(0.);
-  float px = uv.x * aspect / h;
-  float x = px * .8 + uScrub;
-  float fi = floor(x), fx = fract(x);
-  vec3 col = uSurf * .55;
-  float gate = smoothstep(.0, .015, fx) * smoothstep(1., .985, fx) * step(.16, y) * step(y, .84);
+  float hw = uFilm.y, fh = uFilm.z;
+  float x = (uv.x - uFilm.x) * aspect / (2. * hw) + .5;
+  if (x < 0. || x > 1.) return vec3(0.);
+  float fy = uv.y / fh + uScrub;
+  float fi = floor(fy), f = fract(fy);
+  vec3 col = uSurf * .9;
+  float img = smoothstep(.155, .165, x) * smoothstep(.845, .835, x) * smoothstep(0., .025, f) * smoothstep(1., .975, f);
+  vec2 fp = vec2((x - .16) / .68, f);
   vec2 c = vec2(hash12(vec2(fi, 1.)), hash12(vec2(fi, 2.)));
-  vec2 fp = vec2(fx, (y - .16) / .68);
-  float blob = exp(-dot(fp - c, fp - c) * 9.) + .6 * exp(-dot(fp - c.yx, fp - c.yx) * 14.);
-  vec3 frame = mix(uBg * 1.4, mix(uA, uB, hash12(vec2(fi, 3.))), blob * .7);
-  frame *= .75 + .25 * sin(fp.y * 140.);
-  col = mix(col, frame, gate);
-  float hx = fract(x * 4.);
-  vec2 hp = vec2((hx - .5) * .25, (abs(y - .5) - .42));
-  float hole = 1. - smoothstep(0., .01, sdRR(hp, vec2(.045, .028), .012));
-  col = mix(col, uBg * .6, hole);
-  float edge = smoothstep(0., .25, uv.x) * smoothstep(1., .75, uv.x);
-  return col * edge * smoothstep(0., .08, y) * smoothstep(1., .92, y);
+  float blob = exp(-dot(fp - c, fp - c) * 6.) + .5 * exp(-dot(fp - c.yx, fp - c.yx) * 11.);
+  vec3 frame = mix(uBg * 1.6, mix(uA, uB, hash12(vec2(fi, 3.))), clamp(blob, 0., 1.) * .5);
+  frame *= .85 + .15 * sin(fp.y * 260.);
+  col = mix(col, frame, img);
+  vec2 hp = vec2((abs(x - .5) - .42) * 2. * hw, (fract(fy * 4.) - .5) * fh * .25);
+  float hole = 1. - smoothstep(0., .003, sdRR(hp, vec2(.035 * hw, fh * .25 * .27), .008));
+  col = mix(col, uBg * .5, hole);
+  float rail = smoothstep(.0, .01, x) * smoothstep(1., .99, x);
+  return col * rail * smoothstep(0., .18, uv.y) * smoothstep(1., .82, uv.y);
 }
 void main(){
   vec3 col = texture2D(uNeb, vUv).rgb;
@@ -1090,7 +1090,8 @@ const TRACKS_FRAG = /* glsl */`
 precision highp float;
 varying vec2 vUv;
 uniform vec2 uSize;
-uniform float uScroll, uActive, uOpacity, uPlay;
+uniform float uScroll, uActive, uOpacity, uPlay, uFadeL, uFadeMin;
+uniform vec2 uRes;
 uniform vec3 uA, uB, uSurf, uText, uMuted;
 ${GLSL_NOISE}
 float sdRR(vec2 p, vec2 b, float r){ vec2 q = abs(p) - b + r; return length(max(q, 0.)) + min(max(q.x, q.y), 0.) - r; }
@@ -1139,6 +1140,7 @@ void main(){
   float ph = 1. - smoothstep(0., fwidth(vUv.x) * 2., abs(vUv.x - uPlay));
   col += uA * ph * 1.4; a = max(a, ph);
   float fade = smoothstep(0., .14, vUv.x) * smoothstep(1., .86, vUv.x) * mix(1., .35, y);
+  fade *= mix(uFadeMin, 1., smoothstep(uFadeL - .16, uFadeL, gl_FragCoord.x / uRes.x));
   gl_FragColor = vec4(col, a * fade * uOpacity);
 }
 `;
@@ -1187,7 +1189,7 @@ void main(){
   float core = exp(-d * d * 70.);
   float halo = exp(-d * d * 5.) * .45;
   vec3 c = mix(uA, uB, vT);
-  vec3 col = c * (core + halo) + uText * core * .55;
+  vec3 col = c * (core * 1.5 + halo) + uText * core * .8;
   float ends = mix(smoothstep(0., .06, vT) * smoothstep(1., .94, vT), 1., uClosed);
   gl_FragColor = vec4(col * uAlpha * ends, 1.);
 }
@@ -1200,7 +1202,7 @@ uniform float uThreshold;
 void main(){
   vec3 c = texture2D(uTex, vUv).rgb;
   float l = max(c.r, max(c.g, c.b));
-  gl_FragColor = vec4(c * smoothstep(uThreshold, uThreshold + .45, l), 1.);
+  gl_FragColor = vec4(c * smoothstep(uThreshold, uThreshold + .6, l), 1.);
 }
 `;
 const BLUR_FRAG = /* glsl */`
@@ -1305,7 +1307,7 @@ function createWorld(THREE, gsap) {
       uBg: U(PAL.bg), uSurf: U(PAL.surf), uA: U(PAL.a), uB: U(PAL.b),
     },
   });
-  const brightMat = new THREE.ShaderMaterial({ vertexShader: FS_VERT, fragmentShader: BRIGHT_FRAG, uniforms: { uTex: U(null), uThreshold: U(0.72) }, depthTest: false, depthWrite: false });
+  const brightMat = new THREE.ShaderMaterial({ vertexShader: FS_VERT, fragmentShader: BRIGHT_FRAG, uniforms: { uTex: U(null), uThreshold: U(0.96) }, depthTest: false, depthWrite: false });
   const blurMat = new THREE.ShaderMaterial({ vertexShader: FS_VERT, fragmentShader: BLUR_FRAG, uniforms: { uTex: U(null), uDir: U(new THREE.Vector2()) }, depthTest: false, depthWrite: false });
   const compMat = new THREE.ShaderMaterial({
     vertexShader: FS_VERT, fragmentShader: COMPOSITE_FRAG, depthTest: false, depthWrite: false,
@@ -1319,7 +1321,7 @@ function createWorld(THREE, gsap) {
     vertexShader: BACKDROP_VERT, fragmentShader: BACKDROP_FRAG, depthTest: false, depthWrite: false,
     uniforms: {
       uNeb: U(nebRT.texture), uSlot: U(blackTex), uSlotAmt: U(0), uSlotSize: U(new THREE.Vector2(16, 9)),
-      uFilmAmt: U(0), uScrub: U(0), uFilmY: U(0.6), uFilmH: U(0.2), uTime, uRes,
+      uFilmAmt: U(0), uScrub: U(0), uFilm: U(new THREE.Vector4(0.7, 0.2, 0.25, 0)), uTime, uRes,
       uA: U(PAL.a), uB: U(PAL.b), uBg: U(PAL.bg), uSurf: U(PAL.surf), uText: U(PAL.text),
     },
   });
@@ -1501,7 +1503,7 @@ function createWorld(THREE, gsap) {
 
   // ----- Timeline tracks (scene 04) -----
   const trackU = {
-    uSize: U(new THREE.Vector2(14, 4)), uScroll: U(0), uActive: U(0), uOpacity: U(0), uPlay: U(0.36),
+    uSize: U(new THREE.Vector2(14, 4)), uScroll: U(0), uActive: U(0), uOpacity: U(0), uPlay: U(0.36), uFadeL: U(0), uFadeMin: U(0.25), uRes,
     uA: U(PAL.a), uB: U(PAL.b), uSurf: U(PAL.surf), uText: U(PAL.text), uMuted: U(PAL.muted),
   };
   const tracks = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), new THREE.ShaderMaterial({
@@ -1517,8 +1519,9 @@ function createWorld(THREE, gsap) {
     compare: $('[data-compare]'),
     monitor: $('.monitor__screen'),
     ring: $('[data-anchor="ring"]'),
+    edl: $('.edl'),
   };
-  const layout = { split: { x: 0, top: 2, bot: -2 }, tracks: { y: -2 }, wave: { y: 0 } };
+  const layout = { split: { x: 0, top: 2, bot: -2 }, tracks: { y: -2, z: -1.2, tilt: 0.6 }, wave: { y: 0 } };
   function restRect(el, sceneIdx) {
     // Rect of an element inside a sticky pin, as it sits while that scene holds.
     const r = el.getBoundingClientRect();
@@ -1539,9 +1542,22 @@ function createWorld(THREE, gsap) {
       cd.u.uBorder.value.set(cardW * 0.045, cardH * 0.09);
       cd.u.uBend.value = ringState.R;
     });
-    const tw = view.worldW * (wide ? 1.5 : 2.2);
-    trackU.uSize.value.set(tw, wide ? 4.4 : 3.6);
-    layout.tracks.y = -view.worldH * 0.5 + (wide ? 0.25 : 0.5);
+    // The desk: its near edge sits just above the timeline bar, the far edge recedes toward the monitor.
+    const tw = view.worldW * (wide ? 1.5 : 2.4);
+    const th = wide ? 2.1 : 1.7;
+    trackU.uSize.value.set(tw, th);
+    layout.tracks.tilt = wide ? 0.62 : 0.7;
+    const tilt = layout.tracks.tilt;
+    const zc = -1.2;
+    const zNear = zc + (th / 2) * Math.sin(tilt);
+    // desktop: near edge just above the timeline bar; phone: tucked behind the monitor, clear of the text
+    const tlH = parseFloat(getComputedStyle(root).getPropertyValue('--tl-h')) || 52;
+    const mrest = restRect(anchors.monitor, 3);
+    const nearPx = wide ? view.h - tlH - 14 : mrest.top + mrest.height * 0.92;
+    const nearNdc = 1 - (2 * nearPx) / view.h;
+    layout.tracks.y = nearNdc * (CAM_Z - zNear) * Math.tan((FOV * Math.PI) / 360) + (th / 2) * Math.cos(tilt);
+    layout.tracks.z = zc;
+    trackU.uFadeL.value = wide ? 0.44 : 0;
   }
 
   // ----- Scene keyframes (indexed by scene coordinate) -----
@@ -1760,8 +1776,12 @@ function createWorld(THREE, gsap) {
     // ----- 04 Layers: timeline desk -----
     const inLay = clamp(1 - Math.abs(sc - 3) * 1.1);
     tracks.visible = inLay > 0.001;
-    tracks.position.set(0, layout.tracks.y - (1 - smooth(2.3, 3, sc)) * 2 - smooth(3, 3.8, sc) * 2.5, -1.2);
-    tracks.rotation.set(-1.12, 0, 0);
+    tracks.position.set(0, layout.tracks.y - (1 - smooth(2.3, 3, sc)) * 2 - smooth(3, 3.8, sc) * 2.5, layout.tracks.z);
+    tracks.rotation.set(-layout.tracks.tilt, 0, 0);
+    // the playhead sits under the program monitor: the frame under it is the frame on screen
+    const mb = anchors.monitor.getBoundingClientRect();
+    const mrx = toWorld(mb.left + mb.width / 2, 0).x;
+    trackU.uPlay.value = clamp(0.5 + mrx / trackU.uSize.value.x, 0.08, 0.92);
     tracks.updateMatrixWorld();
     trackU.uOpacity.value = inLay;
     trackU.uScroll.value = p3 * 9 + t * 0.05;
@@ -1786,10 +1806,10 @@ function createWorld(THREE, gsap) {
       backMat.uniforms.uSlotAmt.value = inLay * 0.8;
       backMat.uniforms.uFilmAmt.value = 0;
     } else {
-      backMat.uniforms.uFilmAmt.value = inLay * 0.9;
-      backMat.uniforms.uScrub.value = p3 * 6;
-      backMat.uniforms.uFilmY.value = clamp(1 - (mr.top + mr.height * 0.42) / view.h, 0.3, 0.8);
-      backMat.uniforms.uFilmH.value = wide ? 0.2 : 0.14;
+      backMat.uniforms.uFilmAmt.value = inLay * 0.85;
+      backMat.uniforms.uScrub.value = -p3 * 7;
+      const hw = (mr.width * 0.92) / view.h;
+      backMat.uniforms.uFilm.value.set((mr.left + mr.width / 2) / view.w, hw, hw * 1.35, 0);
       // hero / export slots: loop behind scenes 01 and 06
       const hero = sc < 0.9 ? slot('hero') : null;
       const exp = sc > 4.2 ? slot('export') : null;
@@ -1809,8 +1829,10 @@ function createWorld(THREE, gsap) {
     });
 
     // ----- 05 Rate card: oscilloscope -----
-    const wy = toWorld(0, view.h * (wide ? 0.5 : 0.42)).y;
-    pU.uWave.value.set(-view.worldW * 0.48, view.worldW * 0.48, wy, wide ? 0.9 : 0.55);
+    const er = anchors.edl.getBoundingClientRect();
+    const wy = toWorld(0, view.h * (wide ? 0.52 : 0.42)).y;
+    if (wide) pU.uWave.value.set(toWorld(er.left + 12, 0).x, toWorld(er.right - 12, 0).x, wy, 0.85);
+    else pU.uWave.value.set(-view.worldW * 0.47, view.worldW * 0.47, wy, 0.5);
 
     // ----- 06 Export: leader ring around the portrait -----
     const rr = anchors.ring.getBoundingClientRect();
@@ -1864,17 +1886,18 @@ function createWorld(THREE, gsap) {
     });
     if (!wide) {
       const fadeHead = (el, p) => {
-        const o = 1 - smooth(0.035, 0.11, p);
+        const o = 1 - smooth(0.005, 0.045, p);
         el.style.opacity = o.toFixed(3);
+        el.style.transform = `translate3d(0,${(-(1 - o) * 24).toFixed(1)}px,0)`;
         el.style.pointerEvents = o < 0.2 ? 'none' : '';
       };
       fadeHead(ui.selHead, p1);
       fadeHead(ui.layHead, p3);
-      const show = smooth(0.06, 0.12, p1).toFixed(3);
+      const show = smooth(0.035, 0.07, p1).toFixed(3);
       ui.reels.style.opacity = show;
       ui.bin.style.opacity = show;
     } else if (ui.dirty) {
-      [ui.selHead, ui.layHead, ui.reels, ui.bin].forEach((el) => { el.style.opacity = ''; el.style.pointerEvents = ''; });
+      [ui.selHead, ui.layHead, ui.reels, ui.bin].forEach((el) => { el.style.opacity = ''; el.style.pointerEvents = ''; el.style.transform = ''; });
     }
     ui.dirty = !wide;
     void p2;

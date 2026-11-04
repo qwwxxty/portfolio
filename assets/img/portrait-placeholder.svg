@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="1000" viewBox="0 0 800 1000" role="img" aria-labelledby="t">
+  <title id="t">Placeholder: portrait of Artur Kulik at the edit desk</title>
+  <defs>
+    <radialGradient id="warm" cx="18%" cy="40%" r="70%">
+      <stop offset="0" stop-color="#f75f4c" stop-opacity=".38"/>
+      <stop offset="1" stop-color="#f75f4c" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="screen" cx="78%" cy="38%" r="55%">
+      <stop offset="0" stop-color="#e1a01d" stop-opacity=".28"/>
+      <stop offset="1" stop-color="#e1a01d" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0H0v40" fill="none" stroke="#f4efe7" stroke-opacity=".05"/>
+    </pattern>
+  </defs>
+  <rect width="800" height="1000" fill="#0f1b20"/>
+  <rect width="800" height="1000" fill="url(#grid)"/>
+  <rect width="800" height="1000" fill="url(#warm)"/>
+  <rect width="800" height="1000" fill="url(#screen)"/>
+  <!-- silhouette: head and shoulders -->
+  <g fill="#040e12" opacity=".9">
+    <ellipse cx="380" cy="430" rx="118" ry="142"/>
+    <path d="M150 1000c10-210 110-330 230-330s220 120 230 330z"/>
+  </g>
+  <!-- viewfinder -->
+  <g fill="none" stroke="#f4efe7" stroke-opacity=".5" stroke-width="3">
+    <path d="M60 110V60h50M740 110V60h-50M60 890v50h50M740 890v50h-50"/>
+  </g>
+  <circle cx="400" cy="500" r="7" fill="none" stroke="#f75f4c" stroke-width="3"/>
+  <path d="M400 470v18M400 512v18M370 500h18M412 500h18" stroke="#f75f4c" stroke-width="3"/>
+  <g font-family="Instrument Sans, Arial, sans-serif" fill="#f4efe7">
+    <text x="80" y="104" font-size="22" letter-spacing="3" fill-opacity=".75">PHOTO · 4:5 · PLACEHOLDER</text>
+    <text x="80" y="880" font-size="30" font-weight="600">Artur at the edit desk</text>
+    <text x="80" y="918" font-size="22" fill-opacity=".72">Vertical 4:5 · monitor light on the face · warm rim light</text>
+  </g>
+</svg>
