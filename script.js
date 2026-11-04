@@ -716,7 +716,7 @@ async function boot() {
       import('gsap').then((m) => { loaderProgress(0.2); return m; }),
       import('gsap/ScrollTrigger').then((m) => { loaderProgress(0.24); return m; }),
     ]);
-    const [, [THREE, gsapMod, stMod]] = await withTimeout(Promise.all([fonts.catch(() => {}), libs]), 20000, 'libraries');
+    const [, [THREE, gsapMod, stMod]] = await withTimeout(Promise.all([fonts.catch(() => {}), libs]), 12000, 'libraries');
     const gsap = gsapMod.gsap || gsapMod.default;
     const { ScrollTrigger } = stMod;
     gsap.registerPlugin(ScrollTrigger);
