@@ -1947,19 +1947,22 @@ function createWorld(THREE, gsap) {
     if (on && !rafId) { last = 0; rafId = requestAnimationFrame(frame); }
     if (!on && rafId) { cancelAnimationFrame(rafId); rafId = 0; }
   }
-  document.addEventListener('visibilitychange', () => loop(running && !paused && !document.hidden));
+  let onScreen = true;
+  const live = () => running && !paused && !document.hidden && onScreen;
+  document.addEventListener('visibilitychange', () => loop(live()));
+  // The canvas is fixed full-screen, but if it is ever off screen (print, hidden), stop drawing.
+  new IntersectionObserver(([e]) => { onScreen = e.isIntersecting; loop(live()); }).observe(canvas);
 
   resize();
-  if (params.has('debug')) window.__world = { lU, pU, line, camera, renderer, view };
 
   return {
     intro: null,
     resize: () => { resize(); },
-    start() { running = true; loop(!document.hidden); },
+    start() { running = true; loop(live()); },
     pause(on) {
       paused = on;
       cards.forEach((cd) => { if (cd.video && on) cd.video.pause(); });
-      loop(running && !paused && !document.hidden);
+      loop(live());
     },
     async warmUp() {
       update(16);
