@@ -3,376 +3,423 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>Artur Kulik — Short-form video editor</title>
-  <meta name="description" content="Portfolio of Artur Kulik, a short-form video editor. Reels with motion graphics, kinetic captions and a look built around each story.">
-  <meta name="theme-color" content="#0a0908">
+  <title>Artur Kulik — Short-form video editor for YouTube creators and podcasts</title>
+  <meta name="description" content="Artur Kulik edits reels and Shorts for YouTube creators and podcasts: motion graphics, kinetic captions and a look designed around each story. Send your footage.">
+  <meta name="theme-color" content="#040e12">
+  <meta name="color-scheme" content="dark">
   <link rel="canonical" href="https://qwwxxty.github.io/portfolio/">
   <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Artur Kulik">
   <meta property="og:title" content="Artur Kulik — Short-form video editor">
-  <meta property="og:description" content="Reels with motion graphics, kinetic captions and a look built around each story.">
+  <meta property="og:description" content="Reels and Shorts for YouTube creators and podcasts. Every cut earns the next second.">
   <meta property="og:url" content="https://qwwxxty.github.io/portfolio/">
   <meta property="og:image" content="https://qwwxxty.github.io/portfolio/assets/media/posters/identity-gold.jpg">
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230a0908'/%3E%3Ccircle cx='16' cy='16' r='7' fill='%23ff4d1f'/%3E%3C/svg%3E">
+  <meta property="og:image:width" content="720">
+  <meta property="og:image:height" content="1280">
+  <meta property="og:image:alt" content="Neon gold title “Evidence creates identity” from a reel edited by Artur Kulik">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23040e12'/%3E%3Crect x='5' y='19' width='22' height='6' rx='1.5' fill='%230f1b20'/%3E%3Crect x='6' y='20' width='9' height='4' rx='1' fill='%23e1a01d'/%3E%3Cpath d='M18 5h6l-3 4z' fill='%23f75f4c'/%3E%3Crect x='20.25' y='8' width='1.5' height='19' fill='%23f75f4c'/%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&family=Geist:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap">
-  <link rel="stylesheet" href="assets/css/style.css">
-  <script>document.documentElement.classList.add('js')</script>
-  <script src="assets/js/main.js" defer></script>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wdth,wght@75..100,400..600&family=League+Gothic&display=swap">
+  <link rel="stylesheet" href="styles.css">
+  <!-- Exact versions: the immersive layer is imported dynamically, so a CDN failure leaves the static site intact. -->
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.min.js",
+      "gsap": "https://cdn.jsdelivr.net/npm/gsap@3.12.5/index.js",
+      "gsap/ScrollTrigger": "https://cdn.jsdelivr.net/npm/gsap@3.12.5/ScrollTrigger.js"
+    }
+  }
+  </script>
+  <script>
+    (function (d) {
+      d.classList.add('js');
+      // Show the loader only when the immersive layer will be attempted.
+      if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches && 'noModule' in HTMLScriptElement.prototype) d.classList.add('boot');
+    })(document.documentElement);
+  </script>
+  <script type="module" src="script.js"></script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Artur Kulik",
+    "jobTitle": "Short-form video editor",
+    "description": "Edits reels and Shorts for YouTube creators and podcasts: talking-head reels, podcast clips, motion graphics, kinetic captions, interface animation, colour and pacing.",
+    "url": "https://qwwxxty.github.io/portfolio/",
+    "image": "https://qwwxxty.github.io/portfolio/assets/media/posters/identity-gold.jpg",
+    "email": "mailto:kulikartur130908@gmail.com",
+    "knowsAbout": ["Video editing", "Short-form video", "Motion graphics", "Kinetic captions", "Interface animation", "Colour grading", "Podcast clips"],
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "contactType": "Video editing projects",
+      "email": "kulikartur130908@gmail.com",
+      "availableLanguage": "English"
+    }
+  }
+  </script>
 </head>
 <body>
-  <a class="skip" href="#work">Skip to the work</a>
+  <a class="skip" href="#selects">Skip to the work</a>
 
-  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
     <symbol id="i-play" viewBox="0 0 24 24"><path d="M7 4.5v15l12.5-7.5z" fill="currentColor"/></symbol>
     <symbol id="i-pause" viewBox="0 0 24 24"><path d="M7 4.5h3.6v15H7zM13.4 4.5H17v15h-3.6z" fill="currentColor"/></symbol>
     <symbol id="i-sound" viewBox="0 0 24 24"><path d="M4 9.5v5h3.6L12.5 19V5L7.6 9.5z" fill="currentColor"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18 6a8.5 8.5 0 0 1 0 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
     <symbol id="i-mute" viewBox="0 0 24 24"><path d="M4 9.5v5h3.6L12.5 19V5L7.6 9.5z" fill="currentColor"/><path d="m16 9.5 5 5m0-5-5 5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
     <symbol id="i-prev" viewBox="0 0 24 24"><path d="M19 12H5m6-6-6 6 6 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
     <symbol id="i-next" viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
-    <symbol id="i-drag" viewBox="0 0 24 24"><path d="m9 6-6 6 6 6m6-12 6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-up" viewBox="0 0 24 24"><path d="M12 19V5m-6 6 6-6 6 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-down" viewBox="0 0 24 24"><path d="M12 5v14m-6-6 6 6 6-6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
     <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
+    <symbol id="i-drag" viewBox="0 0 24 24"><path d="m9 6-6 6 6 6m6-12 6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3.5" y="5.5" width="17" height="13" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="m4.5 7 7.5 6 7.5-6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8.5" y="8.5" width="11" height="11" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M15.5 5.5h-9a2 2 0 0 0-2 2v9" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
   </svg>
 
-  <div class="intro" id="intro" aria-hidden="true">
-    <div class="intro__tc" data-intro-tc>00:00:00:00</div>
-    <div class="intro__bar"><span data-intro-bar></span></div>
-    <div class="intro__label"><span>Artur Kulik</span><span>Showreel</span></div>
-  </div>
-
-  <div class="grain" aria-hidden="true"></div>
-  <div class="cursor" aria-hidden="true">
-    <span class="cursor__dot"></span>
-    <span class="cursor__pill"><span class="cursor__label"><svg width="10" height="10"><use href="#i-play"/></svg><span class="cursor__text">Play</span></span></span>
+  <!-- Loader: shown only while the 3D layer loads. "Skip intro" goes straight to the content. -->
+  <div class="loader" id="loader" role="dialog" aria-label="Loading the showreel">
+    <div class="loader__frame" aria-hidden="true">
+      <span class="loader__corner"></span><span class="loader__corner"></span><span class="loader__corner"></span><span class="loader__corner"></span>
+    </div>
+    <p class="loader__label label" aria-hidden="true"><span>Artur Kulik</span><span>Showreel · 6 scenes</span></p>
+    <p class="loader__tc tc" aria-hidden="true" data-loader-tc>00:00:00:00</p>
+    <div class="loader__bar" aria-hidden="true"><span data-loader-bar></span></div>
+    <p class="loader__row label"><span data-loader-step>Loading</span><span class="tc" data-loader-pct>0%</span></p>
+    <button class="btn loader__skip" type="button" data-skip>Skip intro <svg width="14" height="14" aria-hidden="true"><use href="#i-next"/></svg></button>
   </div>
 
   <header class="top">
-    <a class="top__logo" href="#top"><i class="rec"></i>Artur Kulik</a>
-    <nav class="top__nav" aria-label="Main">
-      <a href="#work" data-nav="work">Work</a>
-      <a href="#styles" data-nav="styles">Styles</a>
-      <a href="#craft" data-nav="craft">Craft</a>
-      <a href="#contact" data-nav="contact" data-magnetic>Contact</a>
-    </nav>
+    <a class="top__logo" href="#slate" aria-label="Artur Kulik, back to the first scene"><i class="rec" aria-hidden="true"></i>Artur Kulik</a>
+    <p class="top__scene label" aria-hidden="true"><span data-scene-n>01</span><span data-scene-name>Slate</span></p>
+    <a class="btn btn--accent top__cta" href="mailto:kulikartur130908@gmail.com?subject=Video%20editing%20project"><svg width="16" height="16" aria-hidden="true"><use href="#i-mail"/></svg>Book an edit</a>
   </header>
 
-  <div class="hud" aria-hidden="true">
-    <div class="hud__line"><span data-hud-bar></span></div>
-  </div>
-  <div class="hud__row">
-    <span class="hud__tc" aria-hidden="true" data-hud-tc>00:00:00:00</span>
-    <button class="hud__motion" type="button" data-motion aria-pressed="true">Previews on</button>
-  </div>
-
-  <main id="top">
-    <section class="hero" data-hero aria-labelledby="hero-title">
-      <div class="hero__pin">
-        <div class="hero__glow" aria-hidden="true"></div>
-
-        <div class="hero__deck" data-deck>
-          <a class="deck-card" href="assets/media/reels/downsize-later.mp4" data-open="downsize-later" data-cursor="Play" aria-label="Play Downsize later">
-            <span class="deck-card__in" data-media>
-              <img src="assets/media/posters/downsize-later.jpg" alt="" width="720" height="1280">
-              <video data-src="assets/media/previews/downsize-later.mp4" muted loop playsinline preload="none"></video>
-              <span class="deck-card__shade"></span>
-            </span>
-          </a>
-          <a class="deck-card" href="assets/media/reels/deep-work-math.mp4" data-open="deep-work-math" data-cursor="Play" aria-label="Play Deep work math">
-            <span class="deck-card__in" data-media>
-              <img src="assets/media/posters/deep-work-math.jpg" alt="" width="720" height="1280">
-              <video data-src="assets/media/previews/deep-work-math.mp4" muted loop playsinline preload="none"></video>
-              <span class="deck-card__shade"></span>
-            </span>
-          </a>
-          <a class="deck-card" href="assets/media/reels/identity-gold.mp4" data-open="identity-gold" data-cursor="Play" aria-label="Play Identity, Noir Gold version">
-            <span class="deck-card__in" data-media>
-              <img src="assets/media/posters/identity-gold.jpg" alt="" width="720" height="1280">
-              <video data-src="assets/media/previews/identity-gold.mp4" muted loop playsinline preload="none"></video>
-              <span class="deck-card__shade"></span>
-            </span>
-          </a>
-          <a class="deck-card" href="assets/media/reels/i-asked-ai.mp4" data-open="i-asked-ai" data-cursor="Play" aria-label="Play I asked AI">
-            <span class="deck-card__in" data-media>
-              <img src="assets/media/posters/i-asked-ai.jpg" alt="" width="720" height="1280">
-              <video data-src="assets/media/previews/i-asked-ai.mp4" muted loop playsinline preload="none"></video>
-              <span class="deck-card__shade"></span>
-            </span>
-          </a>
-          <a class="deck-card" href="assets/media/reels/winners-vs-losers.mp4" data-open="winners-vs-losers" data-cursor="Play" aria-label="Play Winners vs losers">
-            <span class="deck-card__in" data-media>
-              <img src="assets/media/posters/winners-vs-losers.jpg" alt="" width="720" height="1280">
-              <video data-src="assets/media/previews/winners-vs-losers.mp4" muted loop playsinline preload="none"></video>
-              <span class="deck-card__shade"></span>
-            </span>
-          </a>
-        </div>
-
-        <h1 class="hero__title" id="hero-title" data-hero-title data-split>Every cut earns <br><em>the next second.</em></h1>
-
-        <div class="hero__foot" data-hero-foot>
-          <p class="hero__sub">I’m Artur Kulik, a short-form video editor. I turn talking-head footage and podcast clips into reels built to hold attention from the first second to the last, with motion graphics, kinetic captions and a look designed around each story.</p>
-          <p class="hero__scroll mono"><span>Scroll</span><i></i></p>
-        </div>
-      </div>
-    </section>
-
-    <div class="band" aria-hidden="true">
-      <div class="band__skew" data-band>
-        <div class="band__track">
-          <span>Motion graphics</span><i></i><em>Kinetic captions</em><i></i><span>Interface animation</span><i></i><em>Colour &amp; mood</em><i></i><span>Pacing</span><i></i><em>B-roll</em><i></i>
-          <span>Motion graphics</span><i></i><em>Kinetic captions</em><i></i><span>Interface animation</span><i></i><em>Colour &amp; mood</em><i></i><span>Pacing</span><i></i><em>B-roll</em><i></i>
-        </div>
-      </div>
+  <!-- Signature detail: the page is one sequence; this edit timeline is the navigation. -->
+  <nav class="tl" aria-label="Scenes timeline">
+    <div class="tl__meta" aria-hidden="true">
+      <span class="tl__track">V1</span>
+      <span class="tl__tc tc" data-tc>00:00:00:00</span>
     </div>
+    <div class="tl__lane" data-tl-lane>
+      <ol class="tl__clips">
+        <li><a class="tl__clip" href="#slate" data-tl-clip><b>01</b><span>Slate</span></a></li>
+        <li><a class="tl__clip" href="#selects" data-tl-clip><b>02</b><span>Selects</span></a></li>
+        <li><a class="tl__clip" href="#looks" data-tl-clip><b>03</b><span>Two looks</span></a></li>
+        <li><a class="tl__clip" href="#layers" data-tl-clip><b>04</b><span>Layers</span></a></li>
+        <li><a class="tl__clip" href="#rates" data-tl-clip><b>05</b><span>Rate card</span></a></li>
+        <li><a class="tl__clip" href="#export" data-tl-clip><b>06</b><span>Export</span></a></li>
+      </ol>
+      <span class="tl__head" aria-hidden="true" data-tl-head></span>
+    </div>
+    <span class="tl__end tc" aria-hidden="true">00:06:44:00</span>
+  </nav>
 
-    <section class="work" id="work" data-work aria-labelledby="work-title">
-      <div class="work__pin" data-work-pin>
-        <div class="work__track" data-work-track>
-          <header class="work__head" data-work-head>
-            <p class="eyebrow mono"><span>Selected work</span><span>9 reels · 6 min 44 s</span></p>
-            <h2 class="display" id="work-title" data-split>No two <em>cut</em> the same.</h2>
-            <p class="work__hint" data-reveal>Each reel gets its own visual language. Open one to watch it with sound.</p>
-            <p class="work__keep mono" data-reveal><span class="only-pinned">Keep scrolling</span><span class="only-swipe">Swipe</span><svg width="22" height="22" aria-hidden="true"><use href="#i-next"/></svg></p>
-          </header>
-
-          <ol class="work__list" data-work-list>
-            <li class="card" data-reel="i-asked-ai" data-title="I asked AI">
-              <a class="card__link" href="assets/media/reels/i-asked-ai.mp4" data-open="i-asked-ai" data-cursor="Play" data-tilt>
-                <span class="card__media" data-media data-reveal="clip">
-                  <span class="card__inner" data-parallax>
-                    <img src="assets/media/posters/i-asked-ai.jpg" alt="" width="720" height="1280" loading="lazy">
-                    <video data-src="assets/media/previews/i-asked-ai.mp4" muted loop playsinline preload="none"></video>
-                  </span>
-                  <span class="card__sheen"></span>
-                  <span class="card__stamp mono"><b>01</b><span>0:28</span></span>
-                </span>
-                <span class="card__info">
-                  <span class="card__title">I asked AI</span>
-                  <span class="card__desc" data-desc>A chat interface built in motion: it types, gets struck through and ends stamped “not recommended”.</span>
-                  <span class="card__meta mono" data-meta>Interface animation · Captions</span>
-                </span>
-              </a>
-            </li>
-            <li class="card" data-reel="winners-vs-losers" data-title="Winners vs losers">
-              <a class="card__link" href="assets/media/reels/winners-vs-losers.mp4" data-open="winners-vs-losers" data-cursor="Play" data-tilt>
-                <span class="card__media" data-media data-reveal="clip">
-                  <span class="card__inner" data-parallax>
-                    <img src="assets/media/posters/winners-vs-losers.jpg" alt="" width="720" height="1280" loading="lazy">
-                    <video data-src="assets/media/previews/winners-vs-losers.mp4" muted loop playsinline preload="none"></video>
-                  </span>
-                  <span class="card__sheen"></span>
-                  <span class="card__stamp mono"><b>02</b><span>0:57</span></span>
-                </span>
-                <span class="card__info">
-                  <span class="card__title">Winners vs losers</span>
-                  <span class="card__desc" data-desc>A high-energy edit: split-screen opener, checklists, b-roll and oversized captions, with a progress bar on top.</span>
-                  <span class="card__meta mono" data-meta>Pacing · Bold captions</span>
-                </span>
-              </a>
-            </li>
-            <li class="card" data-reel="deep-work-math" data-title="Deep work math">
-              <a class="card__link" href="assets/media/reels/deep-work-math.mp4" data-open="deep-work-math" data-cursor="Play" data-tilt>
-                <span class="card__media" data-media data-reveal="clip">
-                  <span class="card__inner" data-parallax>
-                    <img src="assets/media/posters/deep-work-math.jpg" alt="" width="720" height="1280" loading="lazy">
-                    <video data-src="assets/media/previews/deep-work-math.mp4" muted loop playsinline preload="none"></video>
-                  </span>
-                  <span class="card__sheen"></span>
-                  <span class="card__stamp mono"><b>03</b><span>0:41</span></span>
-                </span>
-                <span class="card__info">
-                  <span class="card__title">Deep work math</span>
-                  <span class="card__desc" data-desc>An argument turned into a chart: the formula and bars build on black above a framed talking head.</span>
-                  <span class="card__meta mono" data-meta>Data motion · Explainer</span>
-                </span>
-              </a>
-            </li>
-            <li class="card" data-reel="evicted-at-17" data-title="Evicted at 17">
-              <a class="card__link" href="assets/media/reels/evicted-at-17.mp4" data-open="evicted-at-17" data-cursor="Play" data-tilt>
-                <span class="card__media" data-media data-reveal="clip">
-                  <span class="card__inner" data-parallax>
-                    <img src="assets/media/posters/evicted-at-17.jpg" alt="" width="720" height="1280" loading="lazy">
-                    <video data-src="assets/media/previews/evicted-at-17.mp4" muted loop playsinline preload="none"></video>
-                  </span>
-                  <span class="card__sheen"></span>
-                  <span class="card__stamp mono"><b>04</b><span>0:48</span></span>
-                </span>
-                <span class="card__info">
-                  <span class="card__title">Evicted at 17</span>
-                  <span class="card__desc" data-desc>A podcast clip cut around a personal story, with a title plate and colour-keyed captions.</span>
-                  <span class="card__meta mono" data-meta>Podcast clip · Captions</span>
-                </span>
-              </a>
-            </li>
-            <li class="card" data-reel="downsize-later" data-title="Downsize later">
-              <a class="card__link" href="assets/media/reels/downsize-later.mp4" data-open="downsize-later" data-cursor="Play" data-tilt>
-                <span class="card__media" data-media data-reveal="clip">
-                  <span class="card__inner" data-parallax>
-                    <img src="assets/media/posters/downsize-later.jpg" alt="" width="720" height="1280" loading="lazy">
-                    <video data-src="assets/media/previews/downsize-later.mp4" muted loop playsinline preload="none"></video>
-                  </span>
-                  <span class="card__sheen"></span>
-                  <span class="card__stamp mono"><b>05</b><span>0:31</span></span>
-                </span>
-                <span class="card__info">
-                  <span class="card__title">Downsize later</span>
-                  <span class="card__desc" data-desc>Glass decision cards and glowing type keep a retirement topic calm and easy to follow.</span>
-                  <span class="card__meta mono" data-meta>Motion graphics · Finance</span>
-                </span>
-              </a>
-            </li>
-            <li class="card" data-reel="dopamine" data-title="Dopamine">
-              <a class="card__link" href="assets/media/reels/dopamine.mp4" data-open="dopamine" data-cursor="Play" data-tilt>
-                <span class="card__media" data-media data-reveal="clip">
-                  <span class="card__inner" data-parallax>
-                    <img src="assets/media/posters/dopamine.jpg" alt="" width="720" height="1280" loading="lazy">
-                    <video data-src="assets/media/previews/dopamine.mp4" muted loop playsinline preload="none"></video>
-                  </span>
-                  <span class="card__sheen"></span>
-                  <span class="card__stamp mono"><b>06</b><span>0:55</span></span>
-                </span>
-                <span class="card__info">
-                  <span class="card__title">Dopamine</span>
-                  <span class="card__desc" data-desc>A slower, cinematic cut: low-key grade, letterbox framing, serif captions and quiet b-roll.</span>
-                  <span class="card__meta mono" data-meta>Colour · Cinematic</span>
-                </span>
-              </a>
-            </li>
-            <li class="card" data-reel="can-they-retire" data-title="Can they retire">
-              <a class="card__link" href="assets/media/reels/can-they-retire.mp4" data-open="can-they-retire" data-cursor="Play" data-tilt>
-                <span class="card__media" data-media data-reveal="clip">
-                  <span class="card__inner" data-parallax>
-                    <img src="assets/media/posters/can-they-retire.jpg" alt="" width="720" height="1280" loading="lazy">
-                    <video data-src="assets/media/previews/can-they-retire.mp4" muted loop playsinline preload="none"></video>
-                  </span>
-                  <span class="card__sheen"></span>
-                  <span class="card__stamp mono"><b>07</b><span>0:32</span></span>
-                </span>
-                <span class="card__info">
-                  <span class="card__title">Can they retire</span>
-                  <span class="card__desc" data-desc>A paper-style explainer with switches, price tags and a hand-drawn circle around the point that matters.</span>
-                  <span class="card__meta mono" data-meta>Explainer · Motion graphics</span>
-                </span>
-              </a>
-            </li>
-          </ol>
-
-          <a class="work__next" href="#styles">
-            <span class="mono">Next</span>
-            <span class="work__next-title">Same take, <em>two looks</em></span>
-          </a>
-        </div>
-
-        <div class="ruler" aria-hidden="true">
-          <div class="ruler__ticks" data-ruler></div>
-          <div class="ruler__head"></div>
+  <main>
+    <!-- 01 · SLATE -->
+    <section class="scene scene--slate" id="slate" data-scene aria-labelledby="slate-title">
+      <div class="scene__pin">
+        <div class="slate">
+          <p class="slate__eyebrow label" data-reveal><span>Scene 01</span><span>Slate</span><span>Short-form video editor</span></p>
+          <h1 class="slate__title" id="slate-title">
+            <span class="slate__name" data-name>Artur Kulik</span>
+            <span class="slate__tag" data-split>Every cut earns the next second.</span>
+          </h1>
+          <p class="slate__lede" data-reveal>I’m Artur Kulik, a short-form video editor. I turn talking-head footage and podcast clips into reels built to hold attention from the first second to the last, with motion graphics, kinetic captions and a look designed around each story.</p>
+          <div class="slate__actions" data-reveal>
+            <a class="btn btn--accent btn--big" href="mailto:kulikartur130908@gmail.com?subject=Video%20editing%20project"><svg width="18" height="18" aria-hidden="true"><use href="#i-mail"/></svg>Book an edit</a>
+            <a class="btn btn--big" href="#selects"><svg width="14" height="14" aria-hidden="true"><use href="#i-play"/></svg>Watch the selects</a>
+          </div>
+          <dl class="slate__board label" data-reveal>
+            <div><dt>Prod.</dt><dd>Reels &amp; Shorts</dd></div>
+            <div><dt>For</dt><dd>YouTube creators &amp; podcasts · US &amp; Europe</dd></div>
+            <div><dt>Where</dt><dd>Remote</dd></div>
+            <div><dt>Runtime</dt><dd class="tc">00:06:44:00</dd></div>
+          </dl>
+          <p class="slate__scroll label" aria-hidden="true"><i></i><span>Scroll to play</span></p>
         </div>
       </div>
     </section>
 
-    <section class="styles" id="styles" aria-labelledby="styles-title">
-      <header class="styles__head">
-        <p class="eyebrow mono"><span>Same take, two looks</span><span>08 + 09</span></p>
-        <h2 class="display" id="styles-title" data-split>One script. <em>Two worlds.</em></h2>
-        <p class="styles__lede" data-reveal>Same voice, same timing, same 56 seconds. One reads like a notebook, the other like a late-night title sequence. Drag across the frame to switch between them.</p>
-      </header>
+    <!-- 02 · SELECTS -->
+    <section class="scene scene--selects" id="selects" data-scene aria-labelledby="selects-title">
+      <div class="scene__pin">
+        <header class="selects__head">
+          <p class="label" data-reveal><span>Scene 02 · Selected work</span><span>9 reels · 6 min 44 s</span></p>
+          <h2 class="h-xl" id="selects-title" data-split>No two cut the same.</h2>
+          <p class="selects__lede" data-reveal>Each reel gets its own visual language. Open one to watch it with sound.</p>
+        </header>
 
-      <div class="styles__stage">
-        <div class="style-col" data-reel="identity-notebook" data-title="Identity — Notebook" data-reveal>
-          <p class="mono style-col__n">08 · 0:56</p>
-          <h3 class="style-col__title">Notebook</h3>
-          <p class="style-col__desc" data-desc>Paper texture, Polaroids, sticky notes and handwritten captions.</p>
-          <p class="mono style-col__meta" data-meta>Paper motion · Handwritten type</p>
-          <a class="btn" href="assets/media/reels/identity-notebook.mp4" data-open="identity-notebook" data-magnetic><svg width="14" height="14" aria-hidden="true"><use href="#i-play"/></svg>Watch with sound</a>
-        </div>
+        <div class="selects__stage" data-anchor="cards" aria-hidden="true"></div>
 
-        <div class="compare" data-compare data-cursor="Drag" data-reveal="clip" style="--pos:50%">
-          <video class="compare__v" data-compare-a data-src="assets/media/compare/gold.mp4" poster="assets/media/posters/identity-gold.jpg" muted playsinline preload="none"></video>
-          <video class="compare__v compare__v--top" data-compare-b data-src="assets/media/compare/notebook.mp4" poster="assets/media/posters/identity-notebook.jpg" muted playsinline preload="none"></video>
-          <span class="compare__tag compare__tag--l mono" aria-hidden="true">Notebook</span>
-          <span class="compare__tag compare__tag--r mono" aria-hidden="true">Noir Gold</span>
+        <ol class="reels" data-reels>
+          <li class="reel" data-reel="i-asked-ai" data-title="I asked AI">
+            <a class="reel__poster" href="assets/media/reels/i-asked-ai.mp4" data-open="i-asked-ai" aria-label="Play “I asked AI” with sound">
+              <img src="assets/media/posters/i-asked-ai.jpg" alt="Man talking to camera next to an animated chat window stamped “not recommended”" width="720" height="1280" loading="lazy" decoding="async">
+              <video data-src="assets/media/previews/i-asked-ai.mp4" muted loop playsinline preload="none" aria-hidden="true"></video>
+            </a>
+            <div class="reel__info">
+              <p class="reel__n label"><span><b>01</b> / 07</span><span class="tc">0:28</span></p>
+              <h3 class="reel__title">I asked AI</h3>
+              <p class="reel__desc" data-desc>A chat interface built in motion: it types, gets struck through and ends stamped “not recommended”.</p>
+              <p class="reel__meta label" data-meta>Interface animation · Captions</p>
+              <a class="btn reel__play" href="assets/media/reels/i-asked-ai.mp4" data-open="i-asked-ai"><svg width="14" height="14" aria-hidden="true"><use href="#i-play"/></svg>Watch with sound</a>
+            </div>
+          </li>
+          <li class="reel" data-reel="winners-vs-losers" data-title="Winners vs losers">
+            <a class="reel__poster" href="assets/media/reels/winners-vs-losers.mp4" data-open="winners-vs-losers" aria-label="Play “Winners vs losers” with sound">
+              <img src="assets/media/posters/winners-vs-losers.jpg" alt="Split-screen opener: the same speaker twice, with the caption “The difference between winners vs”" width="720" height="1280" loading="lazy" decoding="async">
+              <video data-src="assets/media/previews/winners-vs-losers.mp4" muted loop playsinline preload="none" aria-hidden="true"></video>
+            </a>
+            <div class="reel__info">
+              <p class="reel__n label"><span><b>02</b> / 07</span><span class="tc">0:57</span></p>
+              <h3 class="reel__title">Winners vs losers</h3>
+              <p class="reel__desc" data-desc>A high-energy edit: split-screen opener, checklists, b-roll and oversized captions, with a progress bar on top.</p>
+              <p class="reel__meta label" data-meta>Pacing · Bold captions</p>
+              <a class="btn reel__play" href="assets/media/reels/winners-vs-losers.mp4" data-open="winners-vs-losers"><svg width="14" height="14" aria-hidden="true"><use href="#i-play"/></svg>Watch with sound</a>
+            </div>
+          </li>
+          <li class="reel" data-reel="deep-work-math" data-title="Deep work math">
+            <a class="reel__poster" href="assets/media/reels/deep-work-math.mp4" data-open="deep-work-math" aria-label="Play “Deep work math” with sound">
+              <img src="assets/media/posters/deep-work-math.jpg" alt="Bar chart “Time = goal ÷ deep work” built on black above a framed talking head" width="720" height="1280" loading="lazy" decoding="async">
+              <video data-src="assets/media/previews/deep-work-math.mp4" muted loop playsinline preload="none" aria-hidden="true"></video>
+            </a>
+            <div class="reel__info">
+              <p class="reel__n label"><span><b>03</b> / 07</span><span class="tc">0:41</span></p>
+              <h3 class="reel__title">Deep work math</h3>
+              <p class="reel__desc" data-desc>An argument turned into a chart: the formula and bars build on black above a framed talking head.</p>
+              <p class="reel__meta label" data-meta>Data motion · Explainer</p>
+              <a class="btn reel__play" href="assets/media/reels/deep-work-math.mp4" data-open="deep-work-math"><svg width="14" height="14" aria-hidden="true"><use href="#i-play"/></svg>Watch with sound</a>
+            </div>
+          </li>
+          <li class="reel" data-reel="evicted-at-17" data-title="Evicted at 17">
+            <a class="reel__poster" href="assets/media/reels/evicted-at-17.mp4" data-open="evicted-at-17" aria-label="Play “Evicted at 17” with sound">
+              <img src="assets/media/posters/evicted-at-17.jpg" alt="Podcast guest at a microphone under the title plate “Evicted at 17”" width="720" height="1280" loading="lazy" decoding="async">
+              <video data-src="assets/media/previews/evicted-at-17.mp4" muted loop playsinline preload="none" aria-hidden="true"></video>
+            </a>
+            <div class="reel__info">
+              <p class="reel__n label"><span><b>04</b> / 07</span><span class="tc">0:48</span></p>
+              <h3 class="reel__title">Evicted at 17</h3>
+              <p class="reel__desc" data-desc>A podcast clip cut around a personal story, with a title plate and colour-keyed captions.</p>
+              <p class="reel__meta label" data-meta>Podcast clip · Captions</p>
+              <a class="btn reel__play" href="assets/media/reels/evicted-at-17.mp4" data-open="evicted-at-17"><svg width="14" height="14" aria-hidden="true"><use href="#i-play"/></svg>Watch with sound</a>
+            </div>
+          </li>
+          <li class="reel" data-reel="downsize-later" data-title="Downsize later">
+            <a class="reel__poster" href="assets/media/reels/downsize-later.mp4" data-open="downsize-later" aria-label="Play “Downsize later” with sound">
+              <img src="assets/media/posters/downsize-later.jpg" alt="Speaker above a glass decision card reading “a contingency”" width="720" height="1280" loading="lazy" decoding="async">
+              <video data-src="assets/media/previews/downsize-later.mp4" muted loop playsinline preload="none" aria-hidden="true"></video>
+            </a>
+            <div class="reel__info">
+              <p class="reel__n label"><span><b>05</b> / 07</span><span class="tc">0:31</span></p>
+              <h3 class="reel__title">Downsize later</h3>
+              <p class="reel__desc" data-desc>Glass decision cards and glowing type keep a retirement topic calm and easy to follow.</p>
+              <p class="reel__meta label" data-meta>Motion graphics · Finance</p>
+              <a class="btn reel__play" href="assets/media/reels/downsize-later.mp4" data-open="downsize-later"><svg width="14" height="14" aria-hidden="true"><use href="#i-play"/></svg>Watch with sound</a>
+            </div>
+          </li>
+          <li class="reel" data-reel="dopamine" data-title="Dopamine">
+            <a class="reel__poster" href="assets/media/reels/dopamine.mp4" data-open="dopamine" aria-label="Play “Dopamine” with sound">
+              <img src="assets/media/posters/dopamine.jpg" alt="Low-key shot of a speaker at a microphone with a serif caption" width="720" height="1280" loading="lazy" decoding="async">
+              <video data-src="assets/media/previews/dopamine.mp4" muted loop playsinline preload="none" aria-hidden="true"></video>
+            </a>
+            <div class="reel__info">
+              <p class="reel__n label"><span><b>06</b> / 07</span><span class="tc">0:55</span></p>
+              <h3 class="reel__title">Dopamine</h3>
+              <p class="reel__desc" data-desc>A slower, cinematic cut: low-key grade, letterbox framing, serif captions and quiet b-roll.</p>
+              <p class="reel__meta label" data-meta>Colour · Cinematic</p>
+              <a class="btn reel__play" href="assets/media/reels/dopamine.mp4" data-open="dopamine"><svg width="14" height="14" aria-hidden="true"><use href="#i-play"/></svg>Watch with sound</a>
+            </div>
+          </li>
+          <li class="reel" data-reel="can-they-retire" data-title="Can they retire">
+            <a class="reel__poster" href="assets/media/reels/can-they-retire.mp4" data-open="can-they-retire" aria-label="Play “Can they retire” with sound">
+              <img src="assets/media/posters/can-they-retire.jpg" alt="Speaker above a paper card of compromises with switches, price tags and a hand-drawn circle" width="720" height="1280" loading="lazy" decoding="async">
+              <video data-src="assets/media/previews/can-they-retire.mp4" muted loop playsinline preload="none" aria-hidden="true"></video>
+            </a>
+            <div class="reel__info">
+              <p class="reel__n label"><span><b>07</b> / 07</span><span class="tc">0:32</span></p>
+              <h3 class="reel__title">Can they retire</h3>
+              <p class="reel__desc" data-desc>A paper-style explainer with switches, price tags and a hand-drawn circle around the point that matters.</p>
+              <p class="reel__meta label" data-meta>Explainer · Motion graphics</p>
+              <a class="btn reel__play" href="assets/media/reels/can-they-retire.mp4" data-open="can-they-retire"><svg width="14" height="14" aria-hidden="true"><use href="#i-play"/></svg>Watch with sound</a>
+            </div>
+          </li>
+        </ol>
+
+        <div class="reels__bin label" aria-hidden="true" data-bin></div>
+      </div>
+    </section>
+
+    <!-- 03 · TWO LOOKS -->
+    <section class="scene scene--looks" id="looks" data-scene aria-labelledby="looks-title">
+      <div class="scene__pin">
+        <header class="looks__head">
+          <p class="label" data-reveal><span>Scene 03 · Same take, two looks</span><span>08 + 09</span></p>
+          <h2 class="h-xl" id="looks-title" data-split>One script. Two worlds.</h2>
+          <p class="looks__lede" data-reveal>Same voice, same timing, same 56 seconds. One reads like a notebook, the other like a late-night title sequence. Drag across the frame to switch between them.</p>
+        </header>
+
+        <div class="compare" data-compare style="--pos:50%" role="group" aria-label="Identity reel: Notebook and Noir Gold versions, same take">
+          <div class="compare__layer">
+            <img src="assets/media/posters/identity-gold.jpg" alt="" width="720" height="1280" loading="lazy" decoding="async">
+            <video class="compare__v" data-compare-a data-src="assets/media/compare/gold.mp4" muted playsinline preload="none" aria-hidden="true"></video>
+          </div>
+          <div class="compare__layer compare__layer--top">
+            <img src="assets/media/posters/identity-notebook.jpg" alt="" width="720" height="1280" loading="lazy" decoding="async">
+            <video class="compare__v" data-compare-b data-src="assets/media/compare/notebook.mp4" muted playsinline preload="none" aria-hidden="true"></video>
+          </div>
+          <span class="compare__tag compare__tag--l label" aria-hidden="true">Notebook</span>
+          <span class="compare__tag compare__tag--r label" aria-hidden="true">Noir Gold</span>
           <div class="compare__line" aria-hidden="true"><span class="compare__knob"><svg width="14" height="14"><use href="#i-prev"/></svg><svg width="14" height="14"><use href="#i-next"/></svg></span></div>
           <input class="compare__range" type="range" min="0" max="100" value="50" aria-label="Divider between the Notebook and Noir Gold versions">
         </div>
 
-        <div class="style-col style-col--r" data-reel="identity-gold" data-title="Identity — Noir Gold" data-reveal>
-          <p class="mono style-col__n">09 · 0:56</p>
-          <h3 class="style-col__title"><em>Noir Gold</em></h3>
-          <p class="style-col__desc" data-desc>Neon titles, drifting particles and a dark motivational grade.</p>
-          <p class="mono style-col__meta" data-meta>Neon type · Particles · Grade</p>
-          <a class="btn" href="assets/media/reels/identity-gold.mp4" data-open="identity-gold" data-magnetic><svg width="14" height="14" aria-hidden="true"><use href="#i-play"/></svg>Watch with sound</a>
+        <div class="look look--a" data-reel="identity-notebook" data-title="Identity — Notebook">
+          <p class="label look__n"><span><b>08</b> · Notebook</span><span class="tc">0:56</span></p>
+          <h3 class="look__title">Notebook</h3>
+          <p class="look__desc" data-desc>Paper texture, Polaroids, sticky notes and handwritten captions.</p>
+          <p class="label look__meta" data-meta>Paper motion · Handwritten type</p>
+          <a class="btn" href="assets/media/reels/identity-notebook.mp4" data-open="identity-notebook"><svg width="14" height="14" aria-hidden="true"><use href="#i-play"/></svg>Watch with sound</a>
+        </div>
+        <div class="look look--b" data-reel="identity-gold" data-title="Identity — Noir Gold">
+          <p class="label look__n"><span><b>09</b> · Noir Gold</span><span class="tc">0:56</span></p>
+          <h3 class="look__title">Noir Gold</h3>
+          <p class="look__desc" data-desc>Neon titles, drifting particles and a dark motivational grade.</p>
+          <p class="label look__meta" data-meta>Neon type · Particles · Grade</p>
+          <a class="btn" href="assets/media/reels/identity-gold.mp4" data-open="identity-gold"><svg width="14" height="14" aria-hidden="true"><use href="#i-play"/></svg>Watch with sound</a>
         </div>
       </div>
     </section>
 
-    <section class="craft" id="craft" data-craft aria-labelledby="craft-title">
-      <header class="craft__head">
-        <p class="eyebrow mono"><span>What goes into a cut</span><span>04 layers</span></p>
-        <h2 class="display" id="craft-title" data-split>Everything serves <em>the watch.</em></h2>
-      </header>
+    <!-- 04 · LAYERS -->
+    <section class="scene scene--layers" id="layers" data-scene aria-labelledby="layers-title">
+      <div class="scene__pin">
+        <header class="layers__head">
+          <p class="label" data-reveal><span>Scene 04 · What goes into a cut</span><span>04 layers</span></p>
+          <h2 class="h-xl" id="layers-title" data-split>Everything serves the watch.</h2>
+        </header>
 
-      <div class="craft__grid" data-craft-grid>
-        <div class="craft__pin" data-craft-pin>
-          <div class="craft__stage-wrap">
-            <div class="craft__stage" data-reveal="clip">
-              <div class="craft__clip is-active" data-craft-clip>
-                <video data-src="assets/media/previews/winners-vs-losers.mp4" poster="assets/media/posters/winners-vs-losers.jpg" muted loop playsinline preload="none"></video>
-              </div>
-              <div class="craft__clip" data-craft-clip>
-                <video data-src="assets/media/previews/deep-work-math.mp4" poster="assets/media/posters/deep-work-math.jpg" muted loop playsinline preload="none"></video>
-              </div>
-              <div class="craft__clip" data-craft-clip>
-                <video data-src="assets/media/previews/evicted-at-17.mp4" poster="assets/media/posters/evicted-at-17.jpg" muted loop playsinline preload="none"></video>
-              </div>
-              <div class="craft__clip" data-craft-clip>
-                <video data-src="assets/media/previews/dopamine.mp4" poster="assets/media/posters/dopamine.jpg" muted loop playsinline preload="none"></video>
-              </div>
-              <div class="craft__count mono" aria-hidden="true"><b data-craft-count>01</b> / 04</div>
-            </div>
+        <figure class="monitor" data-monitor>
+          <div class="monitor__screen">
+            <div class="monitor__clip is-active" data-layer-clip><img src="assets/media/posters/winners-vs-losers.jpg" alt="" width="720" height="1280" loading="lazy" decoding="async"><video data-src="assets/media/previews/winners-vs-losers.mp4" muted loop playsinline preload="none" aria-hidden="true"></video></div>
+            <div class="monitor__clip" data-layer-clip><img src="assets/media/posters/deep-work-math.jpg" alt="" width="720" height="1280" loading="lazy" decoding="async"><video data-src="assets/media/previews/deep-work-math.mp4" muted loop playsinline preload="none" aria-hidden="true"></video></div>
+            <div class="monitor__clip" data-layer-clip><img src="assets/media/posters/evicted-at-17.jpg" alt="" width="720" height="1280" loading="lazy" decoding="async"><video data-src="assets/media/previews/evicted-at-17.mp4" muted loop playsinline preload="none" aria-hidden="true"></video></div>
+            <div class="monitor__clip" data-layer-clip><img src="assets/media/posters/dopamine.jpg" alt="" width="720" height="1280" loading="lazy" decoding="async"><video data-src="assets/media/previews/dopamine.mp4" muted loop playsinline preload="none" aria-hidden="true"></video></div>
           </div>
+          <figcaption class="monitor__cap label"><span><i class="rec" aria-hidden="true"></i>Program</span><span>Layer <b data-layer-count>01</b> / 04</span></figcaption>
+        </figure>
 
-          <div class="craft__ticks" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+        <ol class="layers" data-layers>
+          <li class="layer is-active" data-layer>
+            <p class="label layer__n"><span>V1</span><span>Layer 01</span></p>
+            <h3 class="layer__title">The first second</h3>
+            <p class="layer__desc">Split-screens, title plates, a question on screen. The opening gives people a reason to stay.</p>
+          </li>
+          <li class="layer" data-layer>
+            <p class="label layer__n"><span>V2</span><span>Layer 02</span></p>
+            <h3 class="layer__title">Graphics that explain</h3>
+            <p class="layer__desc">Formulas, charts and animated interfaces build alongside the words, so the idea lands faster.</p>
+          </li>
+          <li class="layer" data-layer>
+            <p class="label layer__n"><span>V3</span><span>Layer 03</span></p>
+            <h3 class="layer__title">Captions with rhythm</h3>
+            <p class="layer__desc">Word-by-word timing, with colour and weight on the words that matter.</p>
+          </li>
+          <li class="layer" data-layer>
+            <p class="label layer__n"><span>V4</span><span>Layer 04</span></p>
+            <h3 class="layer__title">A look for each story</h3>
+            <p class="layer__desc">Grade, type and texture chosen to fit the subject, from a quiet cinematic cut to loud and high-energy.</p>
+          </li>
+        </ol>
+        <div class="layers__ticks" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+      </div>
+    </section>
 
-          <ol class="craft__list">
-            <li class="craft__item is-active" data-craft-item>
-              <p class="mono">Layer 01</p>
-              <h3>The first second</h3>
-              <p>Split-screens, title plates, a question on screen. The opening gives people a reason to stay.</p>
-            </li>
-            <li class="craft__item" data-craft-item>
-              <p class="mono">Layer 02</p>
-              <h3>Graphics that explain</h3>
-              <p>Formulas, charts and animated interfaces build alongside the words, so the idea lands faster.</p>
-            </li>
-            <li class="craft__item" data-craft-item>
-              <p class="mono">Layer 03</p>
-              <h3>Captions with rhythm</h3>
-              <p>Word-by-word timing, with colour and weight on the words that matter.</p>
-            </li>
-            <li class="craft__item" data-craft-item>
-              <p class="mono">Layer 04</p>
-              <h3>A look for each story</h3>
-              <p>Grade, type and texture chosen to fit the subject, from a quiet cinematic cut to loud and high-energy.</p>
-            </li>
+    <!-- 05 · RATE CARD (edit decision list) -->
+    <section class="scene scene--rates" id="rates" data-scene aria-labelledby="rates-title">
+      <div class="scene__body">
+        <header class="rates__head">
+          <p class="label" data-reveal><span>Scene 05 · Rate card</span><span>Edit decision list</span></p>
+          <h2 class="h-xl" id="rates-title" data-split>The cut list.</h2>
+          <p class="rates__lede" data-reveal>What I cut, and where you can see it in the reels above. Every project is priced on request.</p>
+        </header>
+
+        <div class="edl" data-reveal>
+          <p class="edl__title label" aria-hidden="true"><span>Title: ARTUR_KULIK_RATE_CARD</span><span>FCM: Non-drop frame</span></p>
+          <table class="edl__table">
+            <caption class="visually-hidden">Services and rates</caption>
+            <thead>
+              <tr><th scope="col" class="edl__evt">Evt</th><th scope="col" class="edl__trk">Trk</th><th scope="col">Service</th><th scope="col">Seen in</th><th scope="col" class="edl__rate">Rate</th></tr>
+            </thead>
+            <tbody>
+              <tr><td class="edl__evt">001</td><td class="edl__trk">V1</td><th scope="row">Talking-head reels</th><td class="edl__src"><a href="assets/media/reels/deep-work-math.mp4" data-open="deep-work-math">Deep work math</a></td><td class="edl__rate">Price on request</td></tr>
+              <tr><td class="edl__evt">002</td><td class="edl__trk">A1</td><th scope="row">Podcast clips</th><td class="edl__src"><a href="assets/media/reels/evicted-at-17.mp4" data-open="evicted-at-17">Evicted at 17</a></td><td class="edl__rate">Price on request</td></tr>
+              <tr><td class="edl__evt">003</td><td class="edl__trk">V2</td><th scope="row">Motion graphics</th><td class="edl__src"><a href="assets/media/reels/downsize-later.mp4" data-open="downsize-later">Downsize later</a>, <a href="assets/media/reels/can-they-retire.mp4" data-open="can-they-retire">Can they retire</a></td><td class="edl__rate">Price on request</td></tr>
+              <tr><td class="edl__evt">004</td><td class="edl__trk">V3</td><th scope="row">Kinetic captions</th><td class="edl__src"><a href="assets/media/reels/winners-vs-losers.mp4" data-open="winners-vs-losers">Winners vs losers</a></td><td class="edl__rate">Price on request</td></tr>
+              <tr><td class="edl__evt">005</td><td class="edl__trk">V2</td><th scope="row">Interface animation</th><td class="edl__src"><a href="assets/media/reels/i-asked-ai.mp4" data-open="i-asked-ai">I asked AI</a></td><td class="edl__rate">Price on request</td></tr>
+              <tr><td class="edl__evt">006</td><td class="edl__trk">V4</td><th scope="row">Colour &amp; mood</th><td class="edl__src"><a href="assets/media/reels/dopamine.mp4" data-open="dopamine">Dopamine</a>, <a href="assets/media/reels/identity-gold.mp4" data-open="identity-gold">Identity</a></td><td class="edl__rate">Price on request</td></tr>
+              <tr><td class="edl__evt">007</td><td class="edl__trk">V1</td><th scope="row">Pacing</th><td class="edl__src"><a href="assets/media/reels/winners-vs-losers.mp4" data-open="winners-vs-losers">Winners vs losers</a></td><td class="edl__rate">Price on request</td></tr>
+              <tr><td class="edl__evt">008</td><td class="edl__trk">V1</td><th scope="row">B-roll</th><td class="edl__src"><a href="assets/media/reels/dopamine.mp4" data-open="dopamine">Dopamine</a></td><td class="edl__rate">Price on request</td></tr>
+            </tbody>
+          </table>
+          <p class="edl__foot label"><span>Turnaround</span><mark class="todo">[уточнити]</mark></p>
+        </div>
+
+        <div class="workflow" data-reveal>
+          <h3 class="workflow__title label">How a cut happens</h3>
+          <ol class="workflow__list">
+            <li><b class="tc">01</b><span><strong>Send</strong> a link to your footage or a reel you like.</span></li>
+            <li><b class="tc">02</b><span><strong>Brief:</strong> tell me what it’s for.</span></li>
+            <li><b class="tc">03</b><span><strong>Quote:</strong> price on request, turnaround <mark class="todo">[уточнити]</mark>.</span></li>
+            <li><b class="tc">04</b><span><strong>Cut:</strong> motion graphics, kinetic captions and a look designed around the story.</span></li>
           </ol>
         </div>
       </div>
     </section>
 
-    <section class="contact" id="contact" data-contact aria-labelledby="contact-title">
-      <div class="contact__glow" aria-hidden="true"></div>
-      <p class="eyebrow mono"><span>End of reel</span><span>Your footage next</span></p>
-      <h2 class="contact__title" id="contact-title" data-split>Got footage? <br><em>Let’s cut it.</em></h2>
-      <p class="contact__lede" data-reveal>Send a link to your footage or a reel you like, and tell me what it’s for.</p>
-      <div class="contact__mail" data-reveal>
-        <a class="contact__link" href="mailto:kulikartur130908@gmail.com?subject=Video%20editing%20project" data-email>kulikartur130908@gmail.com</a>
-        <button class="btn btn--quiet" type="button" data-copy="kulikartur130908@gmail.com">Copy email</button>
-        <span class="visually-hidden" role="status" data-copy-status></span>
+    <!-- 06 · EXPORT -->
+    <section class="scene scene--export" id="export" data-scene aria-labelledby="export-title">
+      <div class="scene__body">
+        <div class="export">
+          <div class="export__copy">
+            <p class="label" data-reveal><span>Scene 06 · Export</span><span>Your footage next</span></p>
+            <h2 class="export__title" id="export-title" data-split>Got footage? Let’s cut it.</h2>
+            <p class="export__lede" data-reveal>Send a link to your footage or a reel you like, and tell me what it’s for.</p>
+            <div class="mail" data-reveal>
+              <a class="mail__link" href="mailto:kulikartur130908@gmail.com?subject=Video%20editing%20project">kulikartur130908@gmail.com</a>
+              <div class="mail__actions">
+                <a class="btn btn--accent btn--big" href="mailto:kulikartur130908@gmail.com?subject=Video%20editing%20project"><svg width="18" height="18" aria-hidden="true"><use href="#i-mail"/></svg>Email me</a>
+                <button class="btn btn--big" type="button" data-copy="kulikartur130908@gmail.com"><svg width="16" height="16" aria-hidden="true"><use href="#i-copy"/></svg><span data-copy-label>Copy email</span></button>
+              </div>
+              <span class="visually-hidden" role="status" data-copy-status></span>
+            </div>
+            <ul class="channels label" data-reveal aria-label="Other contacts">
+              <li><span>Phone</span><mark class="todo">[уточнити]</mark></li>
+              <li><span>Telegram</span><mark class="todo">[уточнити]</mark></li>
+              <li><span>Instagram</span><mark class="todo">[уточнити]</mark></li>
+            </ul>
+          </div>
+
+          <figure class="portrait" data-anchor="ring" data-reveal>
+            <!-- When the photo is ready, replace this img with:
+                 <picture>
+                   <source type="image/webp" srcset="assets/img/portrait.webp">
+                   <img src="assets/img/portrait.jpg" alt="Artur Kulik at the edit desk" width="800" height="1000" loading="lazy" decoding="async">
+                 </picture> -->
+            <img src="assets/img/portrait-placeholder.svg" alt="Placeholder for a portrait of Artur Kulik" width="800" height="1000" loading="lazy" decoding="async">
+            <figcaption class="label">Photo to shoot: Artur at the edit desk · vertical 4:5 · monitor light on the face, warm rim light</figcaption>
+          </figure>
+        </div>
+
+        <footer class="foot label">
+          <span>© 2026 Artur Kulik</span>
+          <span>Reels &amp; Shorts editor · Remote</span>
+          <a href="#slate">Back to <span class="tc">00:00:00:00</span></a>
+        </footer>
       </div>
-      <footer class="contact__foot mono">
-        <span>© 2026 Artur Kulik</span>
-        <a href="#top">Back to 00:00:00:00</a>
-      </footer>
     </section>
   </main>
 
@@ -381,11 +428,12 @@
     <button class="player__close icon-btn" type="button" data-player-close aria-label="Close player"><svg width="20" height="20" aria-hidden="true"><use href="#i-close"/></svg></button>
 
     <div class="player__meta">
-      <p class="mono" data-p-index>01 / 09</p>
+      <p class="label tc" data-p-index>01 / 09</p>
       <h2 data-p-title></h2>
       <p class="player__desc" data-p-desc></p>
-      <p class="mono player__tags" data-p-meta></p>
-      <p class="mono player__keys"><kbd>K</kbd> play <kbd>J</kbd><kbd>L</kbd> ±5s <kbd>M</kbd> mute <kbd>↑</kbd><kbd>↓</kbd> reel</p>
+      <p class="label player__tags" data-p-meta></p>
+      <p class="label player__keys"><kbd>K</kbd> play <kbd>J</kbd><kbd>L</kbd> ±5s <kbd>M</kbd> mute <kbd>↑</kbd><kbd>↓</kbd> reel</p>
+      <a class="btn btn--accent player__cta" href="mailto:kulikartur130908@gmail.com?subject=Video%20editing%20project"><svg width="16" height="16" aria-hidden="true"><use href="#i-mail"/></svg>Book an edit</a>
     </div>
 
     <div class="player__frame" data-p-frame>
@@ -395,14 +443,14 @@
       <div class="player__bar">
         <button class="icon-btn icon-btn--bare" type="button" data-p-toggle aria-label="Pause"><svg width="20" height="20" aria-hidden="true"><use data-p-toggle-icon href="#i-pause"/></svg></button>
         <input class="player__seek" type="range" min="0" max="1000" value="0" step="1" aria-label="Seek" data-p-seek>
-        <span class="mono player__time" data-p-time>0:00</span>
+        <span class="tc player__time" data-p-time>0:00</span>
         <button class="icon-btn icon-btn--bare" type="button" data-p-mute aria-label="Mute"><svg width="20" height="20" aria-hidden="true"><use data-p-mute-icon href="#i-sound"/></svg></button>
       </div>
     </div>
 
     <div class="player__nav">
-      <button class="icon-btn" type="button" data-p-prev aria-label="Previous reel"><svg width="20" height="20" aria-hidden="true"><use href="#i-prev"/></svg></button>
-      <button class="icon-btn" type="button" data-p-next aria-label="Next reel"><svg width="20" height="20" aria-hidden="true"><use href="#i-next"/></svg></button>
+      <button class="icon-btn" type="button" data-p-prev aria-label="Previous reel"><svg width="20" height="20" aria-hidden="true"><use href="#i-up"/></svg></button>
+      <button class="icon-btn" type="button" data-p-next aria-label="Next reel"><svg width="20" height="20" aria-hidden="true"><use href="#i-down"/></svg></button>
     </div>
   </dialog>
 </body>
