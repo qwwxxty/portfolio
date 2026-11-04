@@ -1701,8 +1701,12 @@ function createWorld(THREE, gsap) {
     pU.uMouse.value.set(mw.x, mw.y, mouse.strength);
 
     // camera: damped dolly per scene, a short roll on each cut, a little parallax
-    const between = Math.sin(Math.PI * (sc - Math.floor(sc)));
-    const dolly = keyAt(sc, 'cam') - p0 * 1.2 * (sc < 1 ? 1 : 0) - between * 0.9;
+    // sin² starts and ends with zero speed, so the push on each cut never jerks
+    const between = Math.sin(Math.PI * (sc - Math.floor(sc))) ** 2;
+    // the slate push-in fades out while the reel is still flying in from far away,
+    // so the cards arrive already at their final size instead of jumping at the start of scene 02
+    const slatePush = p0 * 1.2 * (1 - smooth(0, 0.6, sc));
+    const dolly = keyAt(sc, 'cam') - slatePush - between * 0.9;
     camera.position.set(mouse.x * 0.22, -mouse.y * 0.12, CAM_Z + dolly);
     camera.lookAt(mouse.x * 0.06, -mouse.y * 0.03, 0);
     camera.rotateZ(between * 0.035 * (Math.floor(sc) % 2 ? -1 : 1));
