@@ -888,7 +888,8 @@ void main(){
     if (aspect > va) cuv.y *= va / aspect; else cuv.x *= aspect / va;
     vec3 v = texture2D(uSlot, cuv + .5).rgb;
     float l = dot(v, vec3(.299, .587, .114));
-    vec3 graded = mix(uBg, mix(uSurf * 2.2, uText, l), .85) * .55 + v * .2;
+    // graded into the palette and kept low, so the footage reads as atmosphere behind the type
+    vec3 graded = mix(uBg, mix(uSurf * 2.4, uText * .8, l * l), .8) * .4 + v * .1;
     col = mix(col, max(col, graded), uSlotAmt);
   }
   if (uFilmAmt > .001) col = mix(col, col + filmStrip(vUv, aspect), uFilmAmt);
@@ -1805,7 +1806,7 @@ function createWorld(THREE, gsap) {
       if (!scrub.video.seeking && Math.abs(scrub.video.currentTime - target) > 1 / 30) scrub.video.currentTime = target;
       backMat.uniforms.uSlot.value = scrub.tex;
       backMat.uniforms.uSlotSize.value.set(scrub.video.videoWidth || 16, scrub.video.videoHeight || 9);
-      backMat.uniforms.uSlotAmt.value = inLay * 0.8;
+      backMat.uniforms.uSlotAmt.value = inLay * 0.75;
       backMat.uniforms.uFilmAmt.value = 0;
     } else {
       backMat.uniforms.uFilmAmt.value = inLay * 0.85;
